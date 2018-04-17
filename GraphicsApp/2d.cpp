@@ -16,8 +16,14 @@ typedef enum state {
 
 typedef struct point
 {
-	int x;
-	int y;
+	float x;
+	float y;
+	float z = 1;
+
+	void rotate(float theta)
+	{
+		
+	}
 } point;
 
 typedef struct ellipse_struct
@@ -58,9 +64,8 @@ void drawLine()
 {
 	glColor3fv(gColor);
 	glBegin(GL_LINES);
-	glVertex2i(line_coords[0].x, gHeight - line_coords[0].y);
-	glVertex2i(line_coords[1].x, gHeight - line_coords[1].y);
-	//cout << line_coords[1].x << "," << line_coords[1].y;
+	glVertex2d(line_coords[0].x, gHeight - line_coords[0].y);
+	glVertex2d(line_coords[1].x, gHeight - line_coords[1].y);
 	glEnd();
 }
 
@@ -89,7 +94,8 @@ void drawEllipse()
 	for (GLfloat theta = 0; theta <= 3600; theta += 1) {
 		double x = ellip.center.x + (ellip.rx * cos(theta));
 		double y = ellip.center.y + (ellip.ry * sin(theta));
-		glVertex2d(x, y);
+		double z = ellip.center.z;
+		glVertex3d(x, y, z);
 	}
 	glEnd();
 }
@@ -126,10 +132,49 @@ void getEllipseData()
 	cin >> ellip.center.x;
 	cout << "Enter y coordinate of center:";
 	cin >> ellip.center.y;
+	cout << "Enter z coordinate of center:";
+	cin >> ellip.center.z;
 	cout << "Enter rx:";
 	cin >> ellip.rx;
 	cout << "Enter ry:";
 	cin >> ellip.ry;
+}
+
+void transform()
+{
+	float xTrans, yTrans;
+	MessageBox(nullptr, TEXT("Please enter the parameters into the console."), TEXT("Enter parameters"), MB_OK);
+	cout << "Enter x translate value: ";
+	cin >> xTrans;
+	cout << "Enter y translate value: ";
+	cin >> yTrans;
+	switch (drawMode)
+	{
+	case line:
+		line_coords[0].x += xTrans;
+		line_coords[0].y -= yTrans;
+		line_coords[1].x += xTrans;
+		line_coords[1].y -= yTrans;
+		drawLine();
+		break;
+	case circle:
+		circle_coords[0].x += xTrans;
+		circle_coords[0].y -= yTrans;
+		circle_coords[1].x += xTrans;
+		circle_coords[1].y -= yTrans;
+		drawCircle();
+		break;
+	case ellipse:
+		ellip.center.x += xTrans;
+		ellip.center.y -= yTrans;
+		drawEllipse();
+		break;
+	case parabola:
+		parab.center.x += xTrans;
+		parab.center.y -= yTrans;
+		drawParabola();
+		break;
+	}
 }
 
 void display()
@@ -199,6 +244,15 @@ void shapeMenuFunc(int val)
 	}
 }
 
+void transformMenuFunc(int val)
+{
+	switch (val)
+	{
+	case 0:
+		transform();
+	}
+}
+
 void mainMenuFunc(int val)
 {
 
@@ -217,9 +271,13 @@ void createMenu()
 	glutAddMenuEntry("Ellipse", 2);
 	glutAddMenuEntry("Parabola", 3);
 
+	int transformMenu = glutCreateMenu(transformMenuFunc);
+	glutAddMenuEntry("Transform", 0);
+
 	int mainMenu = glutCreateMenu(mainMenuFunc);
 	glutAddSubMenu("Color", colorMenu);
 	glutAddSubMenu("Shapes", shapeMenu);
+	glutAddSubMenu("Transform", transformMenu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 void init()
