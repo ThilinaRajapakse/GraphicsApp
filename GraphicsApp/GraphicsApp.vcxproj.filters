@@ -24,5 +24,8 @@
     <ClCompile Include="2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
