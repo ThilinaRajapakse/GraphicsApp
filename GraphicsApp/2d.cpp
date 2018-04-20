@@ -138,13 +138,13 @@
 //
 //void transform()
 //{
-//	float xTrans, yTrans;
-//	MessageBox(nullptr, TEXT("Please enter the parameters into the console."), TEXT("Enter parameters"), MB_OK);
-//	cout << "Enter x translate value: ";
-//	cin >> xTrans;
-//	cout << "Enter y translate value: ";
-//	cin >> yTrans;
-//	switch (drawMode)
+	//float xTrans, yTrans;
+	//MessageBox(nullptr, TEXT("Please enter the parameters into the console."), TEXT("Enter parameters"), MB_OK);
+	//cout << "Enter x translate value: ";
+	//cin >> xTrans;
+	//cout << "Enter y translate value: ";
+	//cin >> yTrans;
+	//switch (drawMode)
 //	{
 //	case line:
 //		line_coords[0].x += xTrans;
